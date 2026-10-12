@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111412">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; media-src blob:; connect-src 'none'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <meta name="description" content="スマホ内の動画を、1本ずっと、または指定回数ずつ順番にリピート。動画はこの端末だけに保存。">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>VIDEO LOOP Mobile</title>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand"><img src="./icons/icon-192.png" width="42" height="42" alt=""><div><h1>VIDEO LOOP</h1><p>いつもの動画を、何度でも。</p></div></div>
+      <button id="open-settings" class="icon-button" aria-label="設定を開く" title="設定"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg></button>
+    </header>
+    <div class="context-bar"><span class="local-badge"><span class="dot"></span>動画はこの端末だけ</span><span id="offline-status">準備中</span></div>
+    <main>
+      <section class="viewer-card" aria-label="動画プレーヤー">
+        <div class="viewer-head"><span id="video-position">YOUR LOOP</span><span id="play-status" class="status">動画を追加</span></div>
+        <div id="video-stage" class="video-stage">
+          <video id="video" controls playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" hidden></video>
+          <div id="empty-player" class="empty-player">
+            <svg viewBox="0 0 120 120" aria-hidden="true"><path class="loop-path" d="M26 43a39 39 0 0 1 66-11l9 12M101 23v21H80M94 77a39 39 0 0 1-66 11L19 76M19 97V76h21"/><path class="play-path" d="m52 45 23 15-23 15z"/></svg>
+            <h2>動画を選んで、リピート。</h2><p>お気に入りの短い動画を<br>スマホから追加しよう。</p>
+            <button id="add-empty" class="primary-button">＋ 動画を追加</button>
+          </div>
+          <button id="resume-overlay" class="resume-overlay" hidden><span aria-hidden="true">▶</span><span>タップして再生</span></button>
+        </div>
+        <div id="player-message" class="player-message" role="status" hidden></div>
+        <div class="now-playing"><h2 id="video-name">まだ動画がありません</h2><p id="repeat-progress">スマホの動画を複数選べます</p></div>
+        <div class="transport">
+          <button id="previous" class="transport-small" aria-label="前の動画" title="前の動画" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14m14-14L8 12l11 7z"/></svg></button>
+          <button id="play" class="play-button" disabled><span id="play-symbol" aria-hidden="true">▶</span><span id="play-label">再生</span></button>
+          <button id="next" class="transport-small" aria-label="次の動画" title="次の動画" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14M5 5l11 7-11 7z"/></svg></button>
+          <button id="restart" class="icon-button" aria-label="先頭から・回数をリセット" title="先頭から" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg></button>
+          <button id="fullscreen" class="icon-button" aria-label="全画面" title="全画面" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m6 0h5v-5"/></svg></button>
+        </div>
+      </section>
+      <section class="loop-card" aria-labelledby="loop-heading">
+        <div class="section-heading"><h2 id="loop-heading">リピートのしかた</h2><span>LOOP MODE</span></div>
+        <div class="mode-switch" role="group" aria-label="リピートモード">
+          <button data-mode="single" class="selected" aria-pressed="true"><span class="mode-icon" aria-hidden="true">∞</span><span>1本をずっと</span><small>同じ動画を無限リピート</small></button>
+          <button data-mode="count" aria-pressed="false"><span class="mode-icon" aria-hidden="true">↪</span><span>回数で次へ</span><small>指定回数ずつ、順番に</small></button>
+        </div>
+        <div id="count-settings" class="count-settings" hidden><label for="repeat-count">各動画を</label><input id="repeat-count" type="number" inputmode="numeric" min="1" step="1" value="3" aria-describedby="count-help"><span>回ずつ再生</span></div>
+        <p id="count-help" class="mode-help">選んだ1本を、止めるまで繰り返します。</p>
+      </section>
+      <section class="playlist-card" aria-labelledby="playlist-heading">
+        <div class="section-heading"><h2 id="playlist-heading">動画リスト <span id="list-count" class="list-count">0</span></h2><button id="add-videos" class="text-button">＋ 追加</button></div>
+        <p id="empty-list" class="empty-list">追加した動画がここに並びます。<br>動画は外部にアップロードされません。</p>
+        <ol id="playlist" class="playlist"></ol>
+        <div id="import-status" class="import-status" role="status" hidden><progress id="import-progress" value="0" max="1"></progress><p id="import-message"></p></div>
+        <div id="import-results" class="import-results" role="status" hidden></div>
+        <p id="storage-summary" class="storage-summary">端末保存を確認中</p>
+      </section>
+    </main>
+    <footer><span>Made by YUU</span><span>v1.0.0</span></footer>
+  </div>
+  <input id="video-files" type="file" accept="video/*" multiple hidden>
+  <input id="backup-file" type="file" accept="application/json,.json" hidden>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <dialog id="settings-dialog" class="settings-dialog">
+    <div class="dialog-head"><h2>設定とアプリ情報</h2><button id="close-settings" class="icon-button" aria-label="設定を閉じる">✕</button></div>
+    <div class="setting-row"><div><label for="keep-awake">再生中は画面を点灯</label><p id="awake-status">状態を確認中</p></div><input id="keep-awake" type="checkbox" role="switch" checked></div>
+    <section class="settings-section"><h3>端末への保存</h3><p id="storage-detail"></p><p id="persist-status">保存保護：確認中</p><button id="request-persist" class="secondary-button">保存データの保護を申請</button><p class="fine-print">動画をChrome内にコピーして保存します。元動画は残してください。サイトデータの削除や機種変更で、アプリ内のコピーは消えることがあります。アプリで動画を削除しても元動画は消しません。</p></section>
+    <section class="settings-section"><h3>設定のバックアップ</h3><p>順番・回数設定をJSONで保存・復元できます。<strong>動画本体は含みません。</strong>復元する端末にも元動画を追加してください。</p><div class="button-row"><button id="export-backup" class="secondary-button">設定を保存</button><button id="import-backup" class="secondary-button">設定を復元</button></div></section>
+    <section class="settings-section"><h3>公開URL</h3><p id="public-url" class="url-text"></p><button id="copy-url" class="secondary-button">URLをコピー</button></section>
+    <section class="settings-section"><h3>プライバシーと使い方</h3><p>動画・動画名・設定を外部へ送信しません。初回表示や更新ではアプリ本体をGitHubから読み込みます。GitHubはアクセス元IPを記録します。</p><p>最初に再生ボタンをタップしてください。画面を見ている間の連続再生用です。他のアプリへ移ると一時停止し、戻ったらタップで再開します。</p><p class="fine-print">同じGitHub Pagesドメインにある自作アプリとはブラウザの保存領域を共有します。動画の暗号化やアプリ独自のロックはありません。公開URLを別の端末で開いても、この端末の動画は表示されません。</p><p id="offline-detail" class="fine-print"></p><button id="apply-update" class="secondary-button" hidden>新しい版に更新する</button><p class="version-label">VIDEO LOOP Mobile · v1.0.0 · Made by YUU</p></section>
+  </dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title"></h2><p id="confirm-body"></p><div class="button-row"><button id="confirm-cancel" class="secondary-button">キャンセル</button><button id="confirm-ok" class="primary-button">実行</button></div></dialog>
+  <dialog id="restore-dialog" class="settings-dialog"><div class="dialog-head"><h2>順番と設定を復元</h2><button id="close-restore" class="icon-button" aria-label="復元を閉じる">✕</button></div><p>動画本体はJSONに入っていません。保存済みの動画を各項目に割り当ててください。未追加の動画は、いったん閉じて追加した後にJSONを選び直せます。</p><div id="restore-items" class="restore-items"></div><p id="restore-summary"></p><button id="apply-restore" class="primary-button">この割り当てで復元</button><p class="fine-print">動画は削除しません。割り当てた順番の後に、残りの動画を並べます。</p></dialog>
+  <noscript>このアプリにはJavaScriptが必要です。Chromeの設定で有効にしてください。</noscript>
+</body>
+</html>
