@@ -1,4 +1,4 @@
-const CACHE = 'yuu-video-loop-mobile-shell-v1.0.0';
+const CACHE = 'yuu-video-loop-mobile-shell-v1.0.1';
 const PREFIX = 'yuu-video-loop-mobile-shell-';
 const BASE = new URL('./', self.location.href);
 const ASSETS = ['index.html', 'style.css', 'app.js', 'player.js', 'storage.js', 'backup.js', 'manifest.webmanifest',

@@ -62,7 +62,7 @@
         <p id="storage-summary" class="storage-summary">端末保存を確認中</p>
       </section>
     </main>
-    <footer><span>Made by YUU</span><span>v1.0.0</span></footer>
+    <footer><span>Made by YUU</span><span>v1.0.1</span></footer>
   </div>
   <input id="video-files" type="file" accept="video/*" multiple hidden>
   <input id="backup-file" type="file" accept="application/json,.json" hidden>
@@ -73,7 +73,7 @@
     <section class="settings-section"><h3>端末への保存</h3><p id="storage-detail"></p><p id="persist-status">保存保護：確認中</p><button id="request-persist" class="secondary-button">保存データの保護を申請</button><p class="fine-print">動画をChrome内にコピーして保存します。元動画は残してください。サイトデータの削除や機種変更で、アプリ内のコピーは消えることがあります。アプリで動画を削除しても元動画は消しません。</p></section>
     <section class="settings-section"><h3>設定のバックアップ</h3><p>順番・回数設定をJSONで保存・復元できます。<strong>動画本体は含みません。</strong>復元する端末にも元動画を追加してください。</p><div class="button-row"><button id="export-backup" class="secondary-button">設定を保存</button><button id="import-backup" class="secondary-button">設定を復元</button></div></section>
     <section class="settings-section"><h3>公開URL</h3><p id="public-url" class="url-text"></p><button id="copy-url" class="secondary-button">URLをコピー</button></section>
-    <section class="settings-section"><h3>プライバシーと使い方</h3><p>動画・動画名・設定を外部へ送信しません。初回表示や更新ではアプリ本体をGitHubから読み込みます。GitHubはアクセス元IPを記録します。</p><p>最初に再生ボタンをタップしてください。画面を見ている間の連続再生用です。他のアプリへ移ると一時停止し、戻ったらタップで再開します。</p><p class="fine-print">同じGitHub Pagesドメインにある自作アプリとはブラウザの保存領域を共有します。動画の暗号化やアプリ独自のロックはありません。公開URLを別の端末で開いても、この端末の動画は表示されません。</p><p id="offline-detail" class="fine-print"></p><button id="apply-update" class="secondary-button" hidden>新しい版に更新する</button><p class="version-label">VIDEO LOOP Mobile · v1.0.0 · Made by YUU</p></section>
+    <section class="settings-section"><h3>プライバシーと使い方</h3><p>動画・動画名・設定を外部へ送信しません。初回表示や更新ではアプリ本体をGitHubから読み込みます。GitHubはアクセス元IPを記録します。</p><p>最初に再生ボタンをタップしてください。画面を見ている間の連続再生用です。他のアプリへ移ると一時停止し、戻ったらタップで再開します。</p><p class="fine-print">同じGitHub Pagesドメインにある自作アプリとはブラウザの保存領域を共有します。動画の暗号化やアプリ独自のロックはありません。公開URLを別の端末で開いても、この端末の動画は表示されません。</p><p id="offline-detail" class="fine-print"></p><button id="apply-update" class="secondary-button" hidden>新しい版に更新する</button><p class="version-label">VIDEO LOOP Mobile · v1.0.1 · Made by YUU</p></section>
   </dialog>
   <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title"></h2><p id="confirm-body"></p><div class="button-row"><button id="confirm-cancel" class="secondary-button">キャンセル</button><button id="confirm-ok" class="primary-button">実行</button></div></dialog>
   <dialog id="restore-dialog" class="settings-dialog"><div class="dialog-head"><h2>順番と設定を復元</h2><button id="close-restore" class="icon-button" aria-label="復元を閉じる">✕</button></div><p>動画本体はJSONに入っていません。保存済みの動画を各項目に割り当ててください。未追加の動画は、いったん閉じて追加した後にJSONを選び直せます。</p><div id="restore-items" class="restore-items"></div><p id="restore-summary"></p><button id="apply-restore" class="primary-button">この割り当てで復元</button><p class="fine-print">動画は削除しません。割り当てた順番の後に、残りの動画を並べます。</p></dialog>

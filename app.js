@@ -35,6 +35,10 @@ const stateValue = () => ({ schemaVersion: 1, settings: { ...settings }, order: 
 
 function toast(message, long = false) {
   clearTimeout(toastTimer);
+  // Put feedback in the active dialog's top layer so it remains visible and accessible.
+  const activeDialog = document.activeElement?.closest('dialog[open]')
+    ?? [...document.querySelectorAll('dialog[open]')].at(-1);
+  (activeDialog ?? document.body).append($('toast'));
   $('toast').textContent = message;
   $('toast').hidden = false;
   toastTimer = setTimeout(() => { $('toast').hidden = true; }, long ? 6500 : 3500);

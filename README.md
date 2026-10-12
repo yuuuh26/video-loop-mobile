@@ -56,4 +56,4 @@ Node.jsで `npm test` と `npm run check` を実行できます。アプリ本�
 
 この制作環境での確認結果と、Android実機で必要な確認は `VALIDATION.md` を参照してください。自動テストは模擬した動画要素のイベントを使うため、実機デコードやバッテリー制御を確認するものではありません。
 
-v1.0.0 · Made by YUU
+v1.0.1 · Made by YUU

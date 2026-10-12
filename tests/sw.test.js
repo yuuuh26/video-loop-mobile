@@ -7,7 +7,7 @@ function setup() {
   const listeners={}, added=[],deleted=[],fetched=[],matched=[];
   const context={URL,Request,Set,Promise,
     self:{location:{href:'https://example.github.io/video-loop-mobile/sw.js'},clients:{claim:async()=>{}},skipWaiting:()=>{},addEventListener:(name,fn)=>listeners[name]=fn},
-    caches:{keys:async()=>['another-app-cache','yuu-video-loop-mobile-shell-v0','yuu-video-loop-mobile-shell-v1.0.0'],delete:async name=>deleted.push(name),
+    caches:{keys:async()=>['another-app-cache','yuu-video-loop-mobile-shell-v0','yuu-video-loop-mobile-shell-v1.0.1'],delete:async name=>deleted.push(name),
       open:async()=>({addAll:async requests=>added.push(...requests),match:async target=>{matched.push(target);return {cached:true};}})},
     fetch:async request=>{fetched.push(request);return {fetched:true};}
   };
